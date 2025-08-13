@@ -1,5 +1,6 @@
 package com.tatyanajacques.dscommerce.entities;
 
+import ch.qos.logback.core.net.server.Client;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -19,13 +20,17 @@ public class Order {
     @JoinColumn(name = "client_id")
     private User client;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
     public Order(){}
 
-    public Order(Long id, User client, OrderStatus status, Instant moment) {
+    public Order(Long id, User client, OrderStatus status, Instant moment, Payment payment) {
         this.id = id;
         this.client = client;
         this.status = status;
         this.moment = moment;
+        this.payment = payment;
     }
 
     public Long getId() {
@@ -58,6 +63,14 @@ public class Order {
 
     public void setMoment(Instant moment) {
         this.moment = moment;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
